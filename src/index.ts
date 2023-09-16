@@ -16,17 +16,22 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get('/users', (req, res) => {  
-  const data = require('./data/users.json');
-  return res.json({ message: data });
+  const data = fs.readFileSync('./data/users.json','utf8');
+  return res.json({ message: JSON.stringify(data) });
 });
 
-app.get('/login', (req, res) => {  
+app.get('/users/login', (req, res) => {  
   //let users = require('./data/users.json');
   const { body } = req;
-  let test = body;
   const data = registerUserSchema.validateSync(body, { abortEarly: false, stripUnknown: false });
-  console.log(test)
+  let reader = fs.readFileSync('./data/users.json','utf8');
+  if(reader.includes(JSON.stringify(data))){
+    console.log("user logged in")
     return res.json({ message: "OK" });
+  }else{
+    return res.json({ message: "FAILURE" });
+  }
+
 });
 
 app.post('/users/register', (req, res) => {

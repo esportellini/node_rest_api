@@ -1,6 +1,6 @@
 # Node Typescript Starter
 
-This project contains a minimal starter for Node.js project with Typescript, ESLint and Prettier already configured
+This project contains a minimal starter for Node.js project with Typescript
 
 ## Prerequisites
 - Node.js 10+

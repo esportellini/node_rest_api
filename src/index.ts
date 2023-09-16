@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { ValidationError } from 'yup';
 import { registerUserSchema } from './validators/register-user-schema';
+import { read } from 'fs';
 
 const fs = require("fs");
 
@@ -35,6 +36,12 @@ app.post('/users/register', (req, res) => {
     const data = registerUserSchema.validateSync(body, { abortEarly: false, stripUnknown: false });
 
   fs.open('./data/users.json', 'a', 666, function( e, id ) {
+    let reader = fs.readFileSync('./data/users.json','utf8');
+    console.log(reader)
+    if(reader.includes(JSON.stringify(data))){
+      console.log("USER GUEI JA EXISTE")
+      return;
+    }
    fs.write( id, JSON.stringify(data) + "\n", null, 'utf8', function(){
     fs.close(id, function(){
      console.log('file is updated');
